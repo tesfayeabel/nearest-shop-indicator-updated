@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced - ShopFinder</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen p-8">
+        <header class="mb-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold">Advanced Options</h1>
+                <a href="main.html" class="text-blue-500 hover:text-blue-600">Back to Main</a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Settings -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Settings</h2>
+                <form id="settingsForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Default Search Radius</label>
+                        <input type="range" min="1" max="20" value="5" class="range-slider" id="defaultRadius">
+                        <div class="text-center mt-2">
+                            <span id="radiusDisplay">5</span> km
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Theme</label>
+                        <select class="auth-input" id="themeSelect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Notifications</label>
+                        <div class="space-y-2">
+                            <div>
+                                <input type="checkbox" id="emailNotif" checked>
+                                <label for="emailNotif">Email Notifications</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="pushNotif" checked>
+                                <label for="pushNotif">Push Notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-button">Save Settings</button>
+                </form>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Contact Support</h2>
+                <form id="supportForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Subject</label>
+                        <input type="text" class="auth-input" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea class="auth-input h-32" required></textarea>
+                    </div>
+                    <button type="submit" class="auth-button">Send Message</button>
+                </form>
+            </div>
+
+            <!-- About -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">About ShopFinder</h2>
+                <div class="space-y-4">
+                    <p>ShopFinder helps you discover nearby shops based on your location. Filter by category, distance, and rating to find exactly what you're looking for.</p>
+                    <p>Version: 1.0.0</p>
+                    <p>© 2025 ShopFinder. All rights reserved.</p>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard (only visible to admins) -->
+            <div id="adminPanel" class="bg-white p-6 rounded-lg shadow-lg hidden">
+                <h2 class="text-xl font-semibold mb-4">Admin Dashboard</h2>
+                <div class="space-y-4">
+                    <button class="auth-button">Manage Users</button>
+                    <button class="auth-button">Manage Shops</button>
+                    <button class="auth-button">View Statistics</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+
+        document.getElementById('themeSelect').value = theme;
+        document.getElementById('themeSelect').addEventListener('change', (e) => {
+            const newTheme = e.target.value;
+            localStorage.setItem('theme', newTheme);
+            document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        });
+
+        // Settings form handler
+        document.getElementById('settingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const theme = document.getElementById('themeSelect').value;
+            localStorage.setItem('theme', theme);
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            alert('Settings saved successfully!');
+        });
+
+        // Update radius display
+        document.getElementById('defaultRadius').addEventListener('input', (e) => {
+            document.getElementById('radiusDisplay').textContent = e.target.value;
+        });
+
+        // Support form handler
+        document.getElementById('supportForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message. Our support team will respond shortly.');
+            e.target.reset();
+        });
+
+        // Check if user is admin
+        const userId = localStorage.getItem('username', 'password');
+        if ('username' === 'admin', 'password' === 'admin123') { // Admin user has ID 1
+            document.getElementById('adminPanel').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

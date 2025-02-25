@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS shops (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    rating REAL,
+    premium BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS users ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    latitude REAL,
+    longitude REAL
+);
+CREATE TABLE IF NOT EXISTS Client_oldusers ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Email/username REAL and TEXT,
+    Password REAL and TEXT,
+);
+CREATE TABLE IF NOT EXISTS first_time_users ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Email/username REAL and TEXT,
+    Password REAL and TEXT,
+);
+   CREATE TABLE IF NOT EXISTS login (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        )
+    ''')
+
+
+INSERT INTO login (username, password) VALUES
+('admin', 'admin123'),  
+;
+
+INSERT INTO users (latitude, longitude) VALUES (40.7200, -74.0000); 

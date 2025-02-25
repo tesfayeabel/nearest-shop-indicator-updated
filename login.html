@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ShopFinder</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h1 class="text-3xl font-bold text-center mb-8">Login</h1>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" required class="auth-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" required class="auth-input">
+                </div>
+                <div id="message" class="hidden"></div>
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+            <p class="mt-4 text-center">
+                Don't have an account? <a href="register.html" class="text-blue-500 hover:text-blue-600">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+
+            try {
+                const response = await fetch('./login.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = "Login successful! Redirecting...";
+                    messageDiv.className = "success-message";
+                    messageDiv.classList.remove('hidden');
+                    
+                    localStorage.setItem('userId', data.user_id);
+                    
+                    setTimeout(() => {
+                        window.location.href = 'main.html';
+                    }, 2000);
+                } else {
+                    messageDiv.textContent = data.detail || "Login failed";
+                    messageDiv.className = "error-message";
+                    messageDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                messageDiv.textContent = "An error occurred. Please try again.";
+                messageDiv.className = "error-message";
+                messageDiv.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

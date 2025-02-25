@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ShopFinder</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h1 class="text-3xl font-bold text-center mb-8">Register</h1>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" required class="auth-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" required class="auth-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required class="auth-input">
+                </div>
+                <div id="message" class="hidden"></div>
+                <button type="submit" class="auth-button">Register</button>
+            </form>
+            <p class="mt-4 text-center">
+                Already have an account? <a href="login.html" class="text-blue-500 hover:text-blue-600">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageDiv = document.getElementById('message');
+
+            if (password !== confirmPassword) {
+                messageDiv.textContent = "Passwords do not match";
+                messageDiv.className = "error-message";
+                messageDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch('./register.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = "Registration successful! Redirecting to login...";
+                    messageDiv.className = "success-message";
+                    messageDiv.classList.remove('hidden');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    messageDiv.textContent = data.detail || "Registration failed";
+                    messageDiv.className = "error-message";
+                    messageDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                messageDiv.textContent = "An error occurred. Please try again.";
+                messageDiv.className = "error-message";
+                messageDiv.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
